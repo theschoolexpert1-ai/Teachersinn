@@ -1,0 +1,3 @@
+'use strict';
+function registerMentorshipRoutes({route,service,security,id,userId=id}){route('GET','/api/mentors','user',ctx=>service.mentors(ctx.user.id));route('GET','/api/mentorships','user',ctx=>service.list(ctx.user.id));route('POST','/api/mentorships','user',ctx=>service.request(ctx,userId(ctx.body.mentor_id),security.str(ctx.body.topic,{field:'Topic',min:3,max:120,required:true}),security.str(ctx.body.message,{field:'Message',min:10,max:1500,required:true})));route('POST','/api/mentorships/:id/respond','user',ctx=>service.respond(ctx,id(ctx.params.id),security.oneOf(ctx.body.action,['accept','decline','complete'],'Action')));}
+module.exports={registerMentorshipRoutes};

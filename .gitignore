@@ -1,0 +1,14 @@
+node_modules/
+data/
+*.db
+*.db-wal
+*.db-shm
+.env
+.env.*
+!.env.example
+supabase/.temp/
+supabase/.branches/
+*.identity-manifest.json
+*.migration-checkpoint.json
+*.migration-report.json
+.private/

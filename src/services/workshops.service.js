@@ -1,0 +1,15 @@
+'use strict';
+function createWorkshopsService({ repository, tx, notify, audit, nowIso, calendar, HttpError }) {
+  return {
+    list: (userId) => repository.listForUser(userId),
+    create(ctx,fields){return tx(()=>{const result=repository.create([...Object.values(fields),ctx.user.id]);audit(ctx.user.id,'admin.workshop_create',`#${result.lastInsertRowid}`,ctx.ip);return{ok:true};});},
+    adminList:()=>repository.adminList(),
+    registrations(workshopId,status,search){if(!repository.find(workshopId))throw new HttpError(404,'Workshop not found.');return repository.registrations(workshopId,status,search);},
+    calendar(workshopId){const workshop=repository.find(workshopId);if(!workshop)throw new HttpError(404,'Workshop not found.');return calendar(workshop);},
+    register(ctx, workshopId) { return tx(() => { const w=repository.find(workshopId); if(!w) throw new HttpError(404,'Workshop not found.'); if(w.starts_at<nowIso()) throw new HttpError(400,'This workshop has already taken place.'); if(repository.registration(ctx.user.id,workshopId)) return {ok:true,alreadyRegistered:true}; if(repository.registrationCount(workshopId)>=w.capacity) throw new HttpError(409,'Sorry, this workshop is full.'); repository.register(ctx.user.id,workshopId); notify(ctx.user.id,`You're registered for "${w.title}".`,'#/workshops'); return {ok:true}; }); },
+    cancel(userId, workshopId) { repository.cancel(userId,workshopId); return {ok:true}; },
+    attendance(ctx, workshopId, userId, status) { return tx(() => { const w=repository.find(workshopId); if(!w) throw new HttpError(404,'Workshop not found.'); const r=repository.registration(userId,workshopId); if(!r) throw new HttpError(404,'Workshop registration not found.'); const ended=new Date(w.starts_at).getTime()+Number(w.duration_min)*60000; if(!Number.isFinite(ended)||Date.now()<ended) throw new HttpError(409,'Attendance can only be recorded after the workshop has ended.'); const previous=r.attendance_status||(r.attended?'attended':'pending'); if(previous===status) return {ok:true,changed:false,status,verifiedAt:r.attendance_verified_at}; const verifiedAt=status==='pending'?null:nowIso(); repository.updateAttendance(workshopId,userId,status,verifiedAt,status==='pending'?null:ctx.user.id); audit(ctx.user.id,'admin.workshop_attendance',`workshop=${workshopId} registration=${userId} ${previous}->${status}`,ctx.ip); notify(userId,status==='attended'?`Your attendance for "${w.title}" has been verified.`:status==='absent'?`Attendance was not verified for "${w.title}".`:`Attendance verification for "${w.title}" is pending.`,`#/workshop/${workshopId}`); return {ok:true,changed:true,previousStatus:previous,status,verifiedAt}; }); },
+    delete(ctx, workshopId) { const w=repository.find(workshopId); if(!w) throw new HttpError(404,'Workshop not found.'); return tx(() => { for(const r of repository.registrants(workshopId)) notify(r.user_id,`The workshop "${w.title}" has been cancelled.`,'#/workshops'); repository.delete(workshopId); audit(ctx.user.id,'admin.workshop_delete',w.title,ctx.ip); return {ok:true}; }); },
+  };
+}
+module.exports={createWorkshopsService};

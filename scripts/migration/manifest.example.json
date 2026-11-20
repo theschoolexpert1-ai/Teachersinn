@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "identities": [
+    {
+      "legacy_user_id": 1,
+      "auth_user_id": "00000000-0000-4000-8000-000000000001",
+      "normalized_email": "replace-with-private-normalized-email",
+      "approved_role": "educator",
+      "approval_reference": "future-authorized-reconciliation"
+    }
+  ]
+}

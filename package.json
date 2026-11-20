@@ -1,0 +1,43 @@
+{
+  "name": "teachersinn",
+  "version": "1.0.0",
+  "description": "TeachersInn — the professional platform exclusively for teachers and educators: upskilling, workshops, networking, mentorship, support and tutorials.",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node --no-warnings src/server.js",
+    "dev": "node --no-warnings --watch src/server.js",
+    "test": "node --test --test-concurrency=1",
+    "verify:backup": "node --no-warnings scripts/verify-backup.js",
+    "benchmark": "node --no-warnings scripts/benchmark.js",
+    "benchmark:frontend": "node --no-warnings scripts/frontend-benchmark.js",
+    "benchmark:db": "node --no-warnings scripts/db-benchmark.js",
+    "db:status": "node --no-warnings scripts/db.js status",
+    "db:verify": "node --no-warnings scripts/db.js verify",
+    "db:migrate": "node --no-warnings scripts/db.js migrate",
+    "test:supabase": "node --test --test-concurrency=1 integration-tests/supabase.js integration-tests/supabase-auth.js integration-tests/postgres-foundation.js integration-tests/postgres-user-repositories.js integration-tests/postgres-learning-repositories.js integration-tests/postgres-workshops-jobs.js integration-tests/postgres-community-network.js integration-tests/postgres-remaining-repositories.js"
+    ,"test:supabase:stage3g": "node --test --test-concurrency=1 integration-tests/postgres-full-integration.js",
+    "test:postgres:http": "node --test --test-concurrency=1 test/postgres-http-integration.test.js"
+    ,"test:supabase:stage3h": "node --test --test-concurrency=1 integration-tests/postgres-http-stage3h.js",
+    "test:migration:stage3i": "node --test --test-concurrency=1 test/stage3i-migration.test.js test/stage3i-cloud-rehearsal.test.js test/stage3i-content-verification.test.js test/stage3i-verification-sql.test.js",
+    "migration:dry-run": "node --no-warnings scripts/migration/dry-run.js",
+    "migration:cloud-preflight": "node --no-warnings scripts/migration/cloud-rehearsal.js",
+    "migration:constraint-audit": "node --no-warnings scripts/migration/constraint-audit.js"
+    ,"cutover:readiness": "node --no-warnings scripts/cutover-readiness.js"
+    ,"cutover:evidence": "node --no-warnings scripts/migration/evidence-assembly.js"
+    ,"backup:sqlite": "node --no-warnings scripts/migration/sqlite-backup.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "author": "Poornaphala Media and Infotech Services LLP",
+  "license": "UNLICENSED",
+  "copyright": "© 2026 Poornaphala Media and Infotech Services LLP. All rights reserved.",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "supabase": "^3.1.0"
+  }
+}

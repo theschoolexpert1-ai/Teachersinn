@@ -1,0 +1,13 @@
+'use strict';
+function createCareersService({repository,tx,audit,nowIso,HttpError}) { return {
+  overview(u){const p=repository.careerProfile(u),x=repository.careerUser(u),fields=[x.designation,x.school,x.city,x.subjects,x.bio,p?.professional_summary,p?.qualifications,p?.skills],completed=fields.filter(v=>String(v||'').trim()).length;return{profileCompletion:Math.round(completed/fields.length*100),hasCv:!!p,applications:repository.applicationCount(u),applied:repository.applicationCount(u,'applied')};},
+  profile(u){return{...repository.fullCareerUser(u),...(repository.careerProfile(u)||{}),user_id:u};},
+  overview(u){const p=repository.careerProfile(u),user=repository.careerUser(u),fields=[user.designation,user.school,user.city,user.subjects,user.bio,p?.professional_summary,p?.qualifications,p?.skills];return{profileCompletion:Math.round(fields.filter(v=>String(v||'').trim()).length/fields.length*100),hasCv:!!p,applications:repository.applicationCount(u),applied:repository.applicationCount(u,'applied')};},
+  profile(u){return{...repository.fullCareerUser(u),...(repository.careerProfile(u)||{}),user_id:u};},
+  saveProfile(ctx,fields){repository.saveProfile(ctx.user.id,fields,nowIso());audit(ctx.user.id,'career.profile_update','',ctx.ip);return{ok:true};},
+  summary(u){const x=repository.careerUser(u),role=x.designation||'educator',experience=x.experience_years?` with ${x.experience_years} years of teaching experience`:'',expertise=x.subjects?` specialising in ${x.subjects}`:'',grades=x.grades?` across ${x.grades}`:'',context=x.school?` at ${x.school}`:x.city?` based in ${x.city}`:'',board=x.board?` within the ${x.board} curriculum`:'';return{mechanism:'rule_based_template',suggestion:`${x.name} is a ${role}${experience}${expertise}${grades}${context}${board}. Committed to thoughtful planning, inclusive practice, and continuous professional learning.`};},
+  jobs:(u,filters)=>repository.jobs(u,filters), detail(u,id){const j=repository.jobDetail(u,id);if(!j)throw new HttpError(404,'Job not found.');return j;},
+  apply(ctx,id){return tx(()=>{const j=repository.job(id);if(!j)throw new HttpError(404,'Job not found.');if(j.status!=='open')throw new HttpError(409,'This job is no longer accepting applications.');if(repository.application(ctx.user.id,id))throw new HttpError(409,'You have already applied for this job.');const r=repository.apply(ctx.user.id,id);audit(ctx.user.id,'career.job_apply',`job=${id}`,ctx.ip);return{ok:true,id:Number(r.lastInsertRowid),status:'applied'};});},
+  applications:(u)=>repository.applications(u),
+}; }
+module.exports={createCareersService};

@@ -1,0 +1,492 @@
+[
+  {
+    "method": "GET",
+    "pattern": "/api/me",
+    "access": "public"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/auth/register",
+    "access": "public"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/auth/login",
+    "access": "public"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/auth/logout",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/auth/password",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/auth/recover",
+    "access": "public"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/auth/verify",
+    "access": "public"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/auth/reset-password",
+    "access": "public"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/auth/sessions",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/auth/logout-others",
+    "access": "user"
+  },
+  {
+    "method": "PUT",
+    "pattern": "/api/profile",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/settings",
+    "access": "user"
+  },
+  {
+    "method": "PUT",
+    "pattern": "/api/settings/notifications",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/profile/export",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/profile/delete",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/dashboard",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/notifications/preview",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/notifications",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/notifications/:id/read",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/notifications/read",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/courses",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/courses/:id",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/courses/:id/enroll",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/lessons/:id/complete",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/certificates",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/certificates/verify/:code",
+    "access": "public"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/workshops",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/workshops/:id/register",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/workshops/:id/cancel",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/workshops/:id/ics",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/admin/workshops",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/workshops",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/workshops/:id/registrations",
+    "access": "admin"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/admin/workshops/:workshopId/registrations/:registrationId/attendance",
+    "access": "admin"
+  },
+  {
+    "method": "DELETE",
+    "pattern": "/api/admin/workshops/:id",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/educators",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/educators/:id",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/connections",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/connections/:id/respond",
+    "access": "user"
+  },
+  {
+    "method": "DELETE",
+    "pattern": "/api/connections/:id",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/connections",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/messages",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/messages/:userId",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/messages/:userId",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/communities",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/discussions",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/communities/:id/posts",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/communities/:id/posts",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/posts/:id",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/posts/:id/replies",
+    "access": "user"
+  },
+  {
+    "method": "DELETE",
+    "pattern": "/api/replies/:id",
+    "access": "user"
+  },
+  {
+    "method": "DELETE",
+    "pattern": "/api/posts/:id",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/tickets",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/tickets",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/tickets/:id",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/tickets/:id/replies",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/mentors",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/mentorships",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/mentorships",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/mentorships/:id/respond",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/tutorials",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/tutorials/:id",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/tutorials/:id/save",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/plans/overview",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/plans",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/plans/:id",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/plans",
+    "access": "user"
+  },
+  {
+    "method": "PUT",
+    "pattern": "/api/plans/:id",
+    "access": "user"
+  },
+  {
+    "method": "DELETE",
+    "pattern": "/api/plans/:id",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/plans/:id/duplicate",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/career",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/career-profile",
+    "access": "user"
+  },
+  {
+    "method": "PUT",
+    "pattern": "/api/career-profile",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/career-profile/summary-suggestion",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/jobs",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/jobs/:id",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/jobs/:id/apply",
+    "access": "user"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/applications",
+    "access": "user"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/admin/jobs",
+    "access": "admin"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/admin/jobs/:id/close",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/overview",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/analytics",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/users/:id",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/courses",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/courses/:id",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/jobs",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/discussions",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/mentorships",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/audit-log",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/users",
+    "access": "admin"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/admin/users/:id",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/tickets",
+    "access": "admin"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/admin/tickets/:id",
+    "access": "admin"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/admin/courses",
+    "access": "admin"
+  },
+  {
+    "method": "PUT",
+    "pattern": "/api/admin/courses/:id",
+    "access": "admin"
+  },
+  {
+    "method": "PUT",
+    "pattern": "/api/admin/courses/:id/lessons",
+    "access": "admin"
+  },
+  {
+    "method": "POST",
+    "pattern": "/api/admin/courses/:id/status",
+    "access": "admin"
+  },
+  {
+    "method": "GET",
+    "pattern": "/api/admin/audit",
+    "access": "admin"
+  }
+]

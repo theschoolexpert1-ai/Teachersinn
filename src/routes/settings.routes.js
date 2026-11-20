@@ -1,0 +1,3 @@
+'use strict';
+function registerSettingsRoutes({route,settings,profiles,authAdapter}){route('GET','/api/settings','user',ctx=>settings.overview(ctx.user));route('PUT','/api/settings/notifications','user',ctx=>settings.updateNotifications(ctx,ctx.body));route('GET','/api/profile/export','user',async ctx=>[200,JSON.stringify(await profiles.export(ctx),null,2),{'Content-Disposition':'attachment; filename="teachersinn-my-data.json"'}]);route('POST','/api/profile/delete','user',async ctx=>{await profiles.deleteAccount(ctx,String(ctx.body.password||''));authAdapter.clear(ctx);return{ok:true};});}
+module.exports={registerSettingsRoutes};

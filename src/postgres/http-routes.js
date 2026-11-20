@@ -1,0 +1,17 @@
+'use strict';
+const S=require('../security');
+const {FILTER_CATEGORIES}=require('../notifications/categories');
+const {routeCollector,HarnessHttpError}=require('./http-harness');
+const {registerAuthRoutes}=require('../routes/auth.routes'),{registerProfileRoutes}=require('../routes/profiles.routes'),{registerSettingsRoutes}=require('../routes/settings.routes'),{registerDashboardRoutes}=require('../routes/dashboard.routes'),{registerNotificationRoutes}=require('../routes/notifications.routes'),{registerLearningRoutes}=require('../routes/learning.routes'),{registerWorkshopRoutes}=require('../routes/workshops.routes'),{registerNetworkingRoutes}=require('../routes/networking.routes'),{registerCommunityRoutes}=require('../routes/community.routes'),{registerSupportRoutes}=require('../routes/support.routes'),{registerMentorshipRoutes}=require('../routes/mentorship.routes'),{registerTutorialRoutes}=require('../routes/tutorials.routes'),{registerLessonPlanRoutes}=require('../routes/lesson-plans.routes'),{registerCareerRoutes}=require('../routes/careers.routes'),{registerAdminRoutes}=require('../routes/admin.routes');
+const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const resourceId=value=>S.int(value,{field:'id',min:1});
+function userId(value){const id=String(value||'').trim();if(!UUID.test(id))throw new S.ValidationError('User id is invalid.');return id.toLowerCase();}
+const safeUser=user=>{if(!user)return null;const{password_hash,failed_logins,locked_until,...safe}=user;return safe;};
+const TICKETS=['Account & Login','Courses & Certificates','Workshops','Technical Issue','Classroom Help','Report a Concern','Other'];
+function createPostgresRouteComposition({services,authAdapter,security=S}){
+ if(!services||!authAdapter)throw new TypeError('PostgreSQL HTTP services and authentication adapter are required.');const{route,routes}=routeCollector();
+ registerAuthRoutes({route,adapter:authAdapter,security,HttpError:HarnessHttpError,safeUser,cpdGoal:50});registerProfileRoutes({route,service:services.profiles,security});registerSettingsRoutes({route,settings:services.settings,profiles:services.profiles,authAdapter});registerDashboardRoutes({route,dashboardService:services.dashboard});
+ registerNotificationRoutes({route,service:services.notifications,security,id:resourceId,filterCategories:FILTER_CATEGORIES});registerLearningRoutes({route,service:services.learning,security,id:resourceId});registerWorkshopRoutes({route,service:services.workshops,security,id:resourceId,userId});registerNetworkingRoutes({route,service:services.messaging,security,id:resourceId,userId});registerCommunityRoutes({route,communityService:services.community,security,id:resourceId});registerSupportRoutes({route,service:services.support,security,id:resourceId,categories:TICKETS});registerMentorshipRoutes({route,service:services.mentorship,security,id:resourceId,userId});registerTutorialRoutes({route,service:services.tutorials,id:resourceId});registerLessonPlanRoutes({route,service:services.lessonPlans,security,id:resourceId});registerCareerRoutes({route,service:services.careers,adminService:services.admin,security,id:resourceId});registerAdminRoutes({route,admin:services.admin,support:services.support,security,id:resourceId,userId});
+ return Object.freeze({routes,inventory:routes.map(({method,pattern,access})=>({method,pattern,access}))});
+}
+module.exports={UUID,resourceId,userId,createPostgresRouteComposition};

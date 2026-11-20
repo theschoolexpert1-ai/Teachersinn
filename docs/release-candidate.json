@@ -1,0 +1,33 @@
+{
+  "candidate": "TeachersInn 1.0.0 RC1",
+  "applicationVersion": "1.0.0",
+  "createdOn": "2026-11-18",
+  "runtime": "Node.js >=22.13.0",
+  "activeConfiguration": { "DATA_BACKEND": "sqlite", "AUTH_BACKEND": "legacy" },
+  "verification": {
+    "baselineTests": { "passed": 83, "failed": 0, "skipped": 0 },
+    "candidateTestsExpected": 162,
+    "candidateTestsObserved": { "passed": 162, "failed": 0, "skipped": 0 },
+    "routeContract": "passed: 98 unique ordered method/path entries",
+    "javascriptSyntax": "passed: 90 project files",
+    "frontendIntegration": "browser-independent Phase 1 audit passed; real-browser verification not verified",
+    "uiAccessibility": "automated and source-level Phase 2 regression passed; 61 frontend tests; real-browser, screen-reader and visual verification not verified",
+    "frontendPerformance": "automated and source-level Phase 3 passed; concurrent identical GET fetches reduced from 2 to 1; real-browser performance not verified",
+    "dependencyAudit": "passed: 0 vulnerabilities",
+    "backupRestore": "passed locally with node:sqlite backup API and migration history validation",
+    "databaseMigrations": "passed through 0004: versioned baseline, checksums, drift detection, rollback, and concurrent initialization",
+    "performance": "passed: 160/160 bounded localhost smoke requests and reproducible focused SQLite benchmark",
+    "backendAcceptance": "development complete for single-instance SQLite and legacy-authentication scope; production readiness not asserted",
+    "applicationAcceptance": "Phase 4 automated and development-scope acceptance passed; 162 tests, 61 frontend tests, 98 routes, database and recovery checks passed; production readiness not asserted",
+    "browserQA": "partially complete: isolated real Chrome login, dashboard, learning/enrollment, course, administrator, theme persistence, history and logout checks passed; cross-browser and viewport coverage remains outstanding",
+    "screenReaderQA": "not verified"
+  },
+  "requiredEnvironment": ["DATA_BACKEND", "AUTH_BACKEND", "HOST", "PORT", "APP_ORIGIN", "PUBLIC_APP_ORIGIN", "COOKIE_SECURE", "TRUST_PROXY", "TEACHERSINN_DATA_DIR", "ADMIN_EMAIL", "ADMIN_PASSWORD"],
+  "deploymentPrerequisites": ["durable private storage", "single application instance", "trusted HTTPS reverse proxy", "secret management", "encrypted restore-tested backups", "monitoring and incident response", "staging browser, accessibility, load, and soak verification"],
+  "artifact": {
+    "packaged": false,
+    "deployed": false,
+    "exclusionsRequired": [".env", "*.db", "*.db-wal", "*.db-shm", "logs", "backups", "temporary data"]
+  },
+  "approval": "Release candidate only; not approved for production"
+}

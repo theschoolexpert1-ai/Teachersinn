@@ -1,0 +1,3 @@
+'use strict';
+function registerSupportRoutes({route,service,security,id,categories}){route('GET','/api/tickets','user',ctx=>service.list(ctx.user.id));route('POST','/api/tickets','user',ctx=>service.create(ctx,security.oneOf(ctx.body.category,categories,'Category'),security.str(ctx.body.subject,{field:'Subject',min:4,max:150,required:true}),security.str(ctx.body.body,{field:'Description',min:10,max:4000,required:true})));route('GET','/api/tickets/:id','user',ctx=>service.detail(ctx,id(ctx.params.id)));route('POST','/api/tickets/:id/replies','user',ctx=>service.reply(ctx,id(ctx.params.id),security.str(ctx.body.body,{field:'Reply',min:2,max:4000,required:true})));}
+module.exports={registerSupportRoutes};
