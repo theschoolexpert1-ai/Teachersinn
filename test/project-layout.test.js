@@ -26,14 +26,19 @@ test('separated frontend and backend layout is wired through runtime and Vercel 
   const database = read('backend/src/db.js');
   assert.match(sqliteServer, /['"]\.\.['"], ['"]\.\.['"], ['"]frontend['"]/);
   assert.match(postgresRuntime, /['"]\.\.['"],['"]\.\.['"],['"]\.\.['"],['"]frontend['"]/);
-  assert.match(database, /['"]\.\.['"], ['"]\.\.['"], ['"]data['"]/);
+  assert.match(database, /path\.resolve\(process\.cwd\(\), ['"]data['"]\)/);
 
   const adapter = read('server.js');
   assert.match(adapter, /require\(['"]\.\/backend\/src\/server['"]\)/);
   assert.match(adapter, /server\.listen/);
 
   const vercel = JSON.parse(read('vercel.json'));
-  assert.deepEqual(vercel.functions['server.js'].includeFiles, ['backend/src/**', 'frontend/**']);
+  assert.equal(vercel.fluid, true);
+  assert.equal(vercel.framework, undefined);
+  assert.equal(vercel.functions, undefined);
+  assert.equal(vercel.builds, undefined);
+  assert.equal(vercel.routes, undefined);
+  assert.equal(vercel.outputDirectory, undefined);
   const ignored = read('.vercelignore');
   assert.match(ignored, /(?:^|\r?\n)data\//);
   assert.match(ignored, /(?:^|\r?\n)\.private\//);

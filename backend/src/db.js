@@ -9,7 +9,12 @@ const fs = require('node:fs');
 const { DatabaseSync } = require('node:sqlite');
 const { migrateDatabase } = require('./migrations');
 
-const DATA_DIR = process.env.TEACHERSINN_DATA_DIR || path.join(__dirname, '..', '..', 'data');
+// Resolve the local SQLite default from the application working directory.
+// Besides matching the root data/ layout, this prevents serverless file tracers
+// from treating a development database beside the source tree as application code.
+const DATA_DIR = process.env.TEACHERSINN_DATA_DIR
+  ? path.resolve(process.env.TEACHERSINN_DATA_DIR)
+  : path.resolve(process.cwd(), 'data');
 fs.mkdirSync(DATA_DIR, { recursive: true, mode: 0o700 });
 const DB_PATH = path.join(DATA_DIR, 'teachersinn.db');
 
