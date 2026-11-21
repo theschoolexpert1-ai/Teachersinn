@@ -40,7 +40,8 @@ test('separated frontend and backend layout is wired through runtime and Vercel 
   assert.equal(vercel.routes, undefined);
   assert.equal(vercel.outputDirectory, undefined);
   const ignored = read('.vercelignore');
-  assert.match(ignored, /(?:^|\r?\n)data\//);
+  assert.match(ignored, /(?:^|\r?\n)\/data\//);
+  assert.doesNotMatch(ignored, /(?:^|\r?\n)data\//);
   assert.match(ignored, /(?:^|\r?\n)\.private\//);
   assert.doesNotMatch(ignored, /(?:^|\r?\n)(?:frontend|backend)\//);
 });

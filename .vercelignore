@@ -1,5 +1,5 @@
 .private/
-data/
+/data/
 test/
 integration-tests/
 scripts/
