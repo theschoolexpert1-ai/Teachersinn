@@ -1,6 +1,7 @@
 'use strict';
 
 const { Pool } = require('pg');
+const { attachDatabasePool } = require('@vercel/functions');
 const { postgresConfig } = require('./config');
 const { mapDatabaseError } = require('./errors');
 
@@ -46,15 +47,18 @@ function createPostgresConnection({ env = process.env, PoolClass = Pool } = {}) 
   let closed = false;
   const open = () => {
     if (closed || closing) throw new Error('PostgreSQL connection pool is closing or closed.');
-    if (!pool) pool = new PoolClass({
-      connectionString: config.connectionString,
-      max: config.max,
-      connectionTimeoutMillis: config.connectionTimeoutMillis,
-      idleTimeoutMillis: config.idleTimeoutMillis,
-      query_timeout: config.statementTimeoutMillis,
-      ssl: config.ssl,
-      application_name: 'teachersinn-repositories',
-    });
+    if (!pool) {
+      pool = new PoolClass({
+        connectionString: config.connectionString,
+        max: config.max,
+        connectionTimeoutMillis: config.connectionTimeoutMillis,
+        idleTimeoutMillis: config.idleTimeoutMillis,
+        query_timeout: config.statementTimeoutMillis,
+        ssl: config.ssl,
+        application_name: 'teachersinn-repositories',
+      });
+      if (env.VERCEL === '1') attachDatabasePool(pool);
+    }
     return pool;
   };
 

@@ -5,8 +5,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const { publicConfig, serverConfig } = require('../src/supabase/config');
-const { createUserClient, createAdminClient } = require('../src/supabase/client');
+const { publicConfig, serverConfig } = require('../backend/src/supabase/config');
+const { createUserClient, createAdminClient } = require('../backend/src/supabase/client');
 
 const root = path.join(__dirname, '..');
 const migrations = [
@@ -28,7 +28,7 @@ test('Supabase configuration is explicit and keeps the secret server-only', () =
   assert.deepEqual(publicConfig(env), { url: 'https://project.supabase.co', publishableKey: 'publishable-test-key' });
   assert.equal(Object.hasOwn(publicConfig(env), 'secretKey'), false);
   assert.equal(serverConfig(env).secretKey, 'secret-test-key');
-  assert.equal(fs.readFileSync(path.join(root, 'public', 'app.js'), 'utf8').includes('SUPABASE_SECRET_KEY'), false);
+  assert.equal(fs.readFileSync(path.join(root, 'frontend', 'app.js'), 'utf8').includes('SUPABASE_SECRET_KEY'), false);
 });
 
 test('server clients disable browser-style session persistence', () => {
@@ -45,7 +45,7 @@ test('server clients disable browser-style session persistence', () => {
 });
 
 test('Supabase backend selection fails closed before the adapter cutover', () => {
-  const result = spawnSync(process.execPath, ['-e', "require('./src/data')"], {
+  const result = spawnSync(process.execPath, ['-e', "require('./backend/src/data')"], {
     cwd: root,
     env: { ...process.env, DATA_BACKEND: 'supabase' },
     encoding: 'utf8',
@@ -169,7 +169,7 @@ test('environment example contains placeholders and SQLite remains the default',
   assert.match(example, /SUPABASE_PUBLISHABLE_KEY=/);
   assert.match(example, /SUPABASE_SECRET_KEY=/);
   assert.doesNotMatch(example, /eyJ[A-Za-z0-9_-]{20,}/);
-  const dataModule = fs.readFileSync(path.join(root, 'src', 'data', 'index.js'), 'utf8');
+  const dataModule = fs.readFileSync(path.join(root, 'backend', 'src', 'data', 'index.js'), 'utf8');
   assert.match(dataModule, /process\.env\.DATA_BACKEND \|\| 'sqlite'/);
 });
 

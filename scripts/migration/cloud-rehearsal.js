@@ -1,5 +1,5 @@
 'use strict';
-const crypto=require('node:crypto');const fs=require('node:fs');const os=require('node:os');const path=require('node:path');const{Pool}=require('pg');const{createClient}=require('@supabase/supabase-js');const{postgresConfig}=require('../../src/postgres/config');const migration=require('./stage3i');const fixture=require('./synthetic-fixture');
+const crypto=require('node:crypto');const fs=require('node:fs');const os=require('node:os');const path=require('node:path');const{Pool}=require('pg');const{createClient}=require('@supabase/supabase-js');const{postgresConfig}=require('../../backend/src/postgres/config');const migration=require('./stage3i');const fixture=require('./synthetic-fixture');
 const durable=require('./durable-report');
 const content=require('./content-verification');
 const verificationSql=require('./verification-sql');

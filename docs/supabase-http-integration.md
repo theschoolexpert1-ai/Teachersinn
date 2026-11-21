@@ -16,11 +16,11 @@ loopback HTTP harness
   -> verified transaction-local Supabase UUID
 ```
 
-`src/postgres/http-context.js` stores only the server-verified identity in `AsyncLocalStorage`. A facade call that receives an owner UUID must match that identity. Arbitrary headers, body user IDs, unsigned claims, and legacy numeric IDs cannot establish identity.
+`backend/src/postgres/http-context.js` stores only the server-verified identity in `AsyncLocalStorage`. A facade call that receives an owner UUID must match that identity. Arbitrary headers, body user IDs, unsigned claims, and legacy numeric IDs cannot establish identity.
 
-`src/postgres/http-services.js` adapts existing route-facing method names to asynchronous PostgreSQL repositories. It does not contain SQL and does not fall back to SQLite. `src/postgres/http-harness.js` supplies the test-only loopback dispatcher, authoritative session-loader boundary, Origin/JSON/CSRF enforcement, access checks, error mapping, and idempotent shutdown.
+`backend/src/postgres/http-services.js` adapts existing route-facing method names to asynchronous PostgreSQL repositories. It does not contain SQL and does not fall back to SQLite. `backend/src/postgres/http-harness.js` supplies the test-only loopback dispatcher, authoritative session-loader boundary, Origin/JSON/CSRF enforcement, access checks, error mapping, and idempotent shutdown.
 
-The active `src/server.js`, `DATA_BACKEND=sqlite`, and `AUTH_BACKEND=legacy` remain unchanged.
+The active `backend/src/server.js`, `DATA_BACKEND=sqlite`, and `AUTH_BACKEND=legacy` remain unchanged.
 
 ## Backend-selection safety
 

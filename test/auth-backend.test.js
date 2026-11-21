@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { authBackend, createAuthRuntime } = require('../src/auth');
+const { authBackend, createAuthRuntime } = require('../backend/src/auth');
 
 test('legacy authentication remains the default and invalid flags fail closed', () => {
   assert.equal(authBackend({}), 'legacy');

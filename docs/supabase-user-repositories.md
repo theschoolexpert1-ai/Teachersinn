@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-Stage 3B adds asynchronous PostgreSQL repositories beside the active synchronous SQLite repositories. It does not connect them to `src/server.js`, change either active backend, activate Supabase Auth, migrate users, or change HTTP or frontend behavior.
+Stage 3B adds asynchronous PostgreSQL repositories beside the active synchronous SQLite repositories. It does not connect them to `backend/src/server.js`, change either active backend, activate Supabase Auth, migrate users, or change HTTP or frontend behavior.
 
 The Management API identified `teachersinn-development` (`ivnmrhwxdawmzaakdhec`). Verified-TLS PostgreSQL preflight found the five expected prior migrations, no conflicting Stage 3B functions, and zero Auth users, profiles, career profiles, or notification preferences. Migration `202611190003_admin_user_management` was committed transactionally. The owner then explicitly authorized project-specific disposable testing despite the CLI main-branch `production` classification.
 

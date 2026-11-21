@@ -7,7 +7,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 function loadClient() {
-  const file = path.join(__dirname, '..', 'public', 'app.js');
+  const file = path.join(__dirname, '..', 'frontend', 'app.js');
   const source = fs.readFileSync(file, 'utf8');
   const boot = source.indexOf('  // ====================================================================== boot');
   assert.notEqual(boot, -1, 'client boot marker must exist');
@@ -110,7 +110,7 @@ test('lesson builder templates, detail view and calendar expose working supporte
 });
 
 test('lesson planning styles are responsive, theme-token driven and A4 print safe', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /\.planner-hero/);
   assert.match(css, /var\(--primary-soft\)/);
   assert.match(css, /@media\(max-width:700px\)/);
@@ -148,8 +148,8 @@ test('notification center renders category and read filters, history groups and 
 });
 
 test('notification activity center remains responsive, theme-token driven and accessible', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
-  const source = fs.readFileSync(path.join(__dirname, '..', 'public', 'app.js'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
+  const source = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app.js'), 'utf8');
   assert.match(css, /\.notification-popover/); assert.match(css, /var\(--primary-soft\)/);
   assert.match(css, /@media\(max-width:700px\)/); assert.match(css, /@media\(max-width:390px\)/);
   assert.match(source, /e\.key === 'Escape'/); assert.match(source, /aria-haspopup="true"/);
@@ -177,7 +177,7 @@ test('administrator analytics and management pages use supported records and pre
 });
 
 test('Sky Blue initializes before CSS while saved Classic and Sky preferences remain supported', () => {
-  const index=fs.readFileSync(path.join(__dirname,'..','public','index.html'),'utf8'); const init=fs.readFileSync(path.join(__dirname,'..','public','theme-init.js'),'utf8');
+  const index=fs.readFileSync(path.join(__dirname,'..','frontend','index.html'),'utf8'); const init=fs.readFileSync(path.join(__dirname,'..','frontend','theme-init.js'),'utf8');
   assert.match(index,/<html lang="en-IN" data-theme="sky">/); assert.match(index,/<meta name="theme-color" content="#2563eb">/);
   assert.ok(index.indexOf('/theme-init.js') < index.indexOf('/styles.css'));
   assert.match(init,/let theme = 'sky'/); assert.match(init,/saved === 'classic' \|\| saved === 'sky'/);
@@ -185,7 +185,7 @@ test('Sky Blue initializes before CSS while saved Classic and Sky preferences re
 });
 
 test('administrator workspace is responsive, theme-compatible and sidebar-safe', () => {
-  const css=fs.readFileSync(path.join(__dirname,'..','public','styles.css'),'utf8');
+  const css=fs.readFileSync(path.join(__dirname,'..','frontend','styles.css'),'utf8');
   assert.match(css,/\.admin-nav/); assert.match(css,/\.admin-metrics/); assert.match(css,/\.admin-profile-layout/);
   assert.match(css,/@media\(max-width:760px\)/); assert.match(css,/@media\(max-width:390px\)/);
   assert.match(css,/var\(--board-soft\)|var\(--primary-soft\)/); assert.match(css,/--primary: var\(--board\)/);
@@ -224,7 +224,7 @@ test('settings password confirmation blocks mismatches before the API request', 
 });
 
 test('settings workspace is responsive, accessible and theme-token driven', () => {
-  const css=fs.readFileSync(path.join(__dirname,'..','public','styles.css'),'utf8'); const source=fs.readFileSync(path.join(__dirname,'..','public','app.js'),'utf8');
+  const css=fs.readFileSync(path.join(__dirname,'..','frontend','styles.css'),'utf8'); const source=fs.readFileSync(path.join(__dirname,'..','frontend','app.js'),'utf8');
   assert.match(css,/\.settings-layout/); assert.match(css,/\.settings-nav/); assert.match(css,/\.settings-toggle/); assert.match(css,/@media\(max-width:850px\)/); assert.match(css,/@media\(max-width:480px\)/);
   assert.match(css,/:root\[data-mode="dark"\]/); assert.match(css,/:root\[data-theme="sky"\]\[data-mode="light"\]/); assert.match(source,/aria-label="Settings sections"/); assert.match(source,/role="alert"/);
 });
@@ -286,14 +286,14 @@ test('new and invalid stored themes safely fall back to Sky Blue', () => {
 });
 
 test('theme CSS keeps system dark appearance and mobile selector rules', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /@media \(prefers-color-scheme: dark\)[\s\S]*:root\[data-theme="sky"\]/);
   assert.match(css, /@media \(max-width: 620px\)[\s\S]*\.theme-picker select/);
   assert.match(css, /:root\[data-theme="sky"\][\s\S]*--board: #2563eb/);
 });
 
 test('Classic theme keeps the warm TeachersInn gold and white visual system', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   const refresh = css.slice(css.indexOf('Professional workspace refresh'));
   const classic = refresh.slice(0, refresh.indexOf('Sky Blue is a colour theme'));
   assert.match(classic, /--paper: #ffffff/);
@@ -335,7 +335,7 @@ test('invalid sidebar preferences fall back to expanded', () => {
 });
 
 test('sidebar CSS expands content, preserves mobile drawer and reduced motion', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /--sidebar-expanded: 260px/);
   assert.match(css, /--sidebar-collapsed: 72px/);
   assert.match(css, /grid-template-columns: var\(--sidebar-width\) minmax\(0, 1fr\)/);
@@ -397,7 +397,7 @@ test('dashboard renders actionable empty states from zero-value data', async () 
 });
 
 test('dashboard layout responds to theme, sidebar and mobile breakpoints', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /\.dashboard-stats \{ grid-template-columns: repeat\(5/);
   assert.match(css, /@media \(max-width: 1000px\)[\s\S]*\.dashboard-grid/);
   assert.match(css, /@media \(max-width: 620px\)[\s\S]*\.dashboard-secondary/);
@@ -470,7 +470,7 @@ test('course detail clearly separates previews, locked lessons and enrollment', 
 });
 
 test('learning workspace remains responsive and token-driven in both themes', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /\.course-catalogue \{ grid-template-columns: repeat\(auto-fill/);
   assert.match(css, /\.course-learning-layout \{ grid-template-columns:/);
   assert.match(css, /@media \(max-width: 1000px\)[\s\S]*\.course-learning-layout/);
@@ -568,7 +568,7 @@ test('workshop empty states explain unavailable and unverified attendance views'
 });
 
 test('workshop layout remains responsive and theme-token driven', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /\.workshop-card \{[^}]*grid-template-columns:/);
   assert.match(css, /\.workshop-facts \{[^}]*repeat\(2/);
   assert.match(css, /@media \(max-width: 1000px\)[\s\S]*\.workshop-card/);
@@ -623,7 +623,7 @@ test('messaging renders searchable conversations, escaped history and mobile nav
 });
 
 test('network and messaging layouts preserve themes, sidebar widths and mobile flow', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /\.educator-grid \{[^}]*auto-fill/); assert.match(css, /\.message-workspace \{[^}]*grid-template-columns:/);
   assert.match(css, /var\(--paper\)|var\(--card\)|var\(--board\)/); assert.match(css, /@media \(max-width: 620px\)[\s\S]*\.message-workspace\.has-thread \.conversation-panel/);
   assert.match(css, /\.message-thread-panel \.bubble \{[^}]*overflow-wrap: anywhere/); assert.match(css, /grid-template-columns: var\(--sidebar-width\)/);
@@ -675,7 +675,7 @@ test('job details and application tracker use only actual supported fields and s
 });
 
 test('career hub remains print-safe, responsive, theme-token driven and sidebar compatible', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /\.career-hero \{[^}]*grid-template-columns:/); assert.match(css, /\.job-grid \{[^}]*auto-fill/); assert.match(css, /\.cv-builder-layout \{[^}]*grid-template-columns:/);
   assert.match(css, /@media print[\s\S]*\.cv-builder-layout[\s\S]*210mm[\s\S]*297mm/); assert.match(css, /@media \(max-width: 620px\)[\s\S]*\.career-stats \{ grid-template-columns: 1fr/);
   assert.match(css, /var\(--board-soft\)|var\(--card\)/); assert.match(css, /grid-template-columns: var\(--sidebar-width\)/);
@@ -716,14 +716,14 @@ test('discussion details safely render content, ordered replies and authorized c
 });
 
 test('community UI remains responsive, theme-token driven and sidebar compatible', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
   assert.match(css, /\.community-layout \{[^}]*grid-template-columns:/); assert.match(css, /\.discussion-feed \{[^}]*display: grid/); assert.match(css, /\.discussion-body \{[^}]*overflow-wrap: anywhere/);
   assert.match(css, /@media \(max-width: 900px\)[\s\S]*\.community-layout \{ grid-template-columns: 1fr/); assert.match(css, /@media \(max-width: 620px\)[\s\S]*\.community-search \{ grid-template-columns: 1fr/);
   assert.match(css, /var\(--line\)|var\(--board-soft\)|var\(--card\)/); assert.match(css, /grid-template-columns: var\(--sidebar-width\)/);
 });
 
 test('every rendered action and form has exactly one registered handler', () => {
-  const source = fs.readFileSync(path.join(__dirname, '..', 'public', 'app.js'), 'utf8');
+  const source = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app.js'), 'utf8');
   const uses = (pattern) => [...source.matchAll(pattern)].map((match) => match[1]);
   const definitions = (namespace) => uses(new RegExp(`${namespace}(?:\\.([A-Za-z0-9_-]+)|\\['([^']+)'\\])\\s*=`, 'g'));
   const normalizedDefinitions = (namespace) => [...source.matchAll(new RegExp(`${namespace}(?:\\.([A-Za-z0-9_-]+)|\\['([^']+)'\\])\\s*=`, 'g'))]
@@ -741,7 +741,7 @@ test('every rendered action and form has exactly one registered handler', () => 
 });
 
 test('frontend API call sites map to the registered backend route contract', () => {
-  const source = fs.readFileSync(path.join(__dirname, '..', 'public', 'app.js'), 'utf8');
+  const source = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app.js'), 'utf8');
   const inventory = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'route-inventory.json'), 'utf8'));
   const callPattern = /api\(\s*'(GET|POST|PUT|DELETE)'\s*,\s*([`'"])(\/api\/.*?)\2/g;
   const calls = [...source.matchAll(callPattern)].map((match) => ({ method: match[1], template: match[3] }));
@@ -810,9 +810,9 @@ test('navigation, focus and motion accessibility safeguards remain present', () 
   const { hooks } = loadClient();
   hooks.setMe({ id: 1, name: 'Teacher', role: 'educator' });
   const page = hooks.layout('dashboard', '').s;
-  const source = fs.readFileSync(path.join(__dirname, '..', 'public', 'app.js'), 'utf8');
-  const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'styles.css'), 'utf8');
-  const index = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
+  const source = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'app.js'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'styles.css'), 'utf8');
+  const index = fs.readFileSync(path.join(__dirname, '..', 'frontend', 'index.html'), 'utf8');
 
   assert.match(page, /class="icon-btn menu-btn"[^>]*aria-controls="sidebar"[^>]*aria-expanded="false"/);
   assert.match(source, /sidebar\.inert = mobile && !open/);

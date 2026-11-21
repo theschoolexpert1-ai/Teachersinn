@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const {
   createPostgresUserRepository, createPostgresCareerProfileRepository,
   createPostgresNotificationPreferenceRepository, createPostgresAdminUserRepository,
-} = require('../src/postgres/repositories/user.repository');
+} = require('../backend/src/postgres/repositories/user.repository');
 
 const A = { authUserId: '123e4567-e89b-42d3-a456-426614174000', verified: true };
 const B = '123e4567-e89b-42d3-a456-426614174001';

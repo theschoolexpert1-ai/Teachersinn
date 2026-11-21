@@ -15,8 +15,8 @@ process.env.COOKIE_SECURE = '0';
 process.env.ADMIN_EMAIL = 'proxy-test@test.local';
 process.env.ADMIN_PASSWORD = 'ProxyTestPassword2026';
 
-const server = require('../src/server');
-const { db } = require('../src/db');
+const server = require('../backend/src/server');
+const { db } = require('../backend/src/db');
 let baseUrl;
 
 test.before(async () => {

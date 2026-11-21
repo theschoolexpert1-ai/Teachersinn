@@ -85,11 +85,11 @@ require a reviewed versioned migration, verified backup, and rehearsed restore.
 Use an isolated `TEACHERSINN_DATA_DIR`:
 
 ```sh
-node --check src/server.js
-node --check src/db.js
-node --check src/security.js
-node --check public/app.js
-node --check public/theme-init.js
+node --check backend/src/server.js
+node --check backend/src/db.js
+node --check backend/src/security.js
+node --check frontend/app.js
+node --check frontend/theme-init.js
 npm test
 npm audit --audit-level=high
 npm run verify:backup

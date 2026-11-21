@@ -2,7 +2,7 @@
 
 const { DatabaseSync } = require('node:sqlite');
 const { performance } = require('node:perf_hooks');
-const { migrations } = require('../src/migrations');
+const { migrations } = require('../backend/src/migrations');
 
 const operations = [
   ['notifications', 'SELECT id,text FROM notifications WHERE user_id=? ORDER BY created_at DESC,id DESC LIMIT 20', [1]],

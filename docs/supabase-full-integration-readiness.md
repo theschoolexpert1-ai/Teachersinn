@@ -21,7 +21,7 @@
 | Tutorials/plans/dashboard | SQLite services | tutorials/lesson-plans/dashboard | Validated |
 | Authentication | Legacy sessions/numeric IDs | Supabase Auth bridge/UUID identity | Not activated; reconciliation required |
 
-The server already awaits every route handler. Stage 3H adds request-scoped verified UUID propagation, an asynchronous PostgreSQL HTTP facade, and a loopback-only harness. Current route registration still mixes bigint resource identifiers with legacy numeric user identifiers, so the isolated composition requires a dual bigint/UUID validator. `src/postgres/integration.js` remains fail-closed and is not wired into `server.js`.
+The server already awaits every route handler. Stage 3H adds request-scoped verified UUID propagation, an asynchronous PostgreSQL HTTP facade, and a loopback-only harness. Current route registration still mixes bigint resource identifiers with legacy numeric user identifiers, so the isolated composition requires a dual bigint/UUID validator. `backend/src/postgres/integration.js` remains fail-closed and is not wired into `server.js`.
 
 ## API and service compatibility
 

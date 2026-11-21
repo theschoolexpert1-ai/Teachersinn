@@ -1,6 +1,6 @@
 'use strict';
 const test=require('node:test');const assert=require('node:assert/strict');
-const repos=require('../src/postgres/repositories');
+const repos=require('../backend/src/postgres/repositories');
 const identity={authUserId:'11111111-1111-4111-8111-111111111111',verified:true};
 function mock(handler=()=>null){const calls=[];const db={many:async(s,v=[])=>{calls.push(['many',s,v]);return handler('many',s,v)||[];},one:async(s,v=[])=>{calls.push(['one',s,v]);return handler('one',s,v)||{authorized:true,n:0,allowed:true};},maybeOne:async(s,v=[])=>{calls.push(['maybeOne',s,v]);return handler('maybeOne',s,v);},execute:async(s,v=[])=>{calls.push(['execute',s,v]);return handler('execute',s,v)??1;}};return{calls,withUserTransaction:async(i,fn)=>{assert.equal(i,identity);return fn(db);}};}
 test('teacher discovery exposes only professional fields and binds verified identity',async()=>{const c=mock();const r=repos.createPostgresTeacherDiscoveryRepository({connection:c});await r.directory(identity,{q:'math',view:'all'});assert.match(c.calls[0][1],/is_active_account/);assert.doesNotMatch(c.calls[0][1],/email|password|notification_preferences/);assert.equal(c.calls[0][2][0],identity.authUserId);});

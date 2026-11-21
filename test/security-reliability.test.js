@@ -2,7 +2,7 @@
 
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const {int,str,oneOf,RateLimiter,ValidationError}=require('../src/security');
+const {int,str,oneOf,RateLimiter,ValidationError}=require('../backend/src/security');
 
 test('integer validation accepts existing numeric formats but rejects coercible structured values',()=>{
   assert.equal(int(4,{field:'Page',min:1,max:10}),4);

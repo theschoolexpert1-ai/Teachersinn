@@ -21,8 +21,8 @@ async function main() {
   process.env.TRUST_PROXY = '1';
   process.env.ADMIN_EMAIL = 'benchmark-admin@test.local';
   process.env.ADMIN_PASSWORD = 'BenchmarkPassword2026';
-  const server = require('../src/server');
-  const { db } = require('../src/db');
+  const server = require('../backend/src/server');
+  const { db } = require('../backend/src/db');
 
   try {
     await new Promise((resolve, reject) => {

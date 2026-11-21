@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Pool } = require('pg');
-const { postgresConfig } = require('../src/postgres/config');
+const { postgresConfig } = require('../backend/src/postgres/config');
 
 const VERSION = '202611190003';
 const NAME = 'admin_user_management';

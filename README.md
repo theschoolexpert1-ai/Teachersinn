@@ -68,7 +68,7 @@ versioned 98-route inventory snapshot protecting methods, order, and access.
 These modules share the existing SQLite connection;
 services own transactions and repositories own parameterized SQL. Route
 dispatch, security checks, and remaining domains are still centralized in
-`src/server.js`. See the [backend architecture](docs/backend-architecture.md)
+`backend/src/server.js`. See the [backend architecture](docs/backend-architecture.md)
 for the actual boundaries and remaining extraction work.
 
 Shared validation rejects unsafe structured-to-integer coercion while retaining
@@ -110,7 +110,7 @@ the disposable reliability suite.
    NODE_ENV=production PORT=3000 COOKIE_SECURE=1 TRUST_PROXY=1 \
    APP_ORIGIN=https://teachersinn.in ADMIN_EMAIL=… ADMIN_PASSWORD=… npm start
    ```
-2. Keep it running with a process manager (systemd or `pm2 start src/server.js --name teachersinn`).
+2. Keep it running with a process manager (systemd or `pm2 start backend/src/server.js --name teachersinn`).
 3. Back up `data/teachersinn.db` with SQLite's online backup mechanism and restore-test backups regularly. Set `TEACHERSINN_DATA_DIR` to durable private storage.
 4. GoDaddy: shared hosting can't run Node — use a GoDaddy VPS (or any VPS/cloud VM), then point your domain's A record at it.
 
@@ -170,12 +170,12 @@ The repository also contains a feature-gated Supabase Auth bridge. It is disable
 
 ```
 teachersinn/
-├── src/
+├── backend/src/
 │   ├── server.js     HTTP server, router, all REST API routes, static files
 │   ├── security.js   hashing, tokens, rate limiting, headers, validation
 │   ├── db.js         SQLite schema (25 tables) and query helpers
 │   └── seed.js       starter courses, workshops, tutorials, communities, jobs
-├── public/
+├── frontend/
 │   ├── index.html    app shell
 │   ├── app.js        single-page app (all screens)
 │   ├── styles.css    design system (light & dark mode, mobile-responsive)

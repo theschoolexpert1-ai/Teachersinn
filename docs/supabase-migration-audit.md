@@ -41,8 +41,8 @@ upload, deployment, or application-database write was performed in this audit.
 
 ## 2. Audit evidence and boundaries
 
-Reviewed sources include `src/server.js`, all route/service/repository modules,
-SQLite migrations `0001`–`0004`, `src/data/index.js`, the HTTP authentication
+Reviewed sources include `backend/src/server.js`, all route/service/repository modules,
+SQLite migrations `0001`–`0004`, `backend/src/data/index.js`, the HTTP authentication
 adapter and Supabase bridge, all three Supabase SQL migrations, Storage policy
 SQL, environment templates, integration tests, and the 98-route fixture.
 
@@ -69,7 +69,7 @@ fresh remote dump.
 | HTTP | Native `node:http` dispatcher with modular route registration | Contracts can be retained |
 | Domain | Services own transactions and business rules | Logic is reusable, but most methods assume synchronous repositories |
 | Persistence | 14 SQLite repositories injected with `get`, `all`, `run`, and `tx` | No PostgreSQL repository implementation |
-| Database switch | `src/data/index.js` | `sqlite` works; `supabase` deliberately throws and fails closed |
+| Database switch | `backend/src/data/index.js` | `sqlite` works; `supabase` deliberately throws and fails closed |
 | Authentication | Legacy scrypt hashes, SQLite sessions, sealed session cookie | Supabase bridge is feature-gated but incomplete for cutover |
 | Frontend | Vanilla JavaScript SPA | API contracts can remain unchanged |
 | File storage | No active upload/download API or UI | Supabase buckets/policies are prepared but not integrated |

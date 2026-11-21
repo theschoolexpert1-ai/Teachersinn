@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test');const assert=require('node:assert/strict');const crypto=require('node:crypto');
 const inventory=require('../test/fixtures/route-inventory.json');const {createClient}=require('@supabase/supabase-js');
-const {createPostgresIntegration,createPostgresHttpServices,createPostgresRouteComposition,createIsolatedPostgresHttpHarness,createPostgresAccountDeletion}=require('../src/postgres');
+const {createPostgresIntegration,createPostgresHttpServices,createPostgresRouteComposition,createIsolatedPostgresHttpHarness,createPostgresAccountDeletion}=require('../backend/src/postgres');
 const REF='ivnmrhwxdawmzaakdhec',url=String(process.env.SUPABASE_TEST_URL||''),secret=String(process.env.SUPABASE_TEST_SECRET_KEY||''),publishable=String(process.env.SUPABASE_PUBLISHABLE_KEY||process.env.SUPABASE_TEST_PUBLISHABLE_KEY||'');
 const opt={auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}};
 function safety(){assert.equal(process.env.RUN_SUPABASE_INTEGRATION,'1');assert.equal(process.env.RUN_STAGE3H_MUTATIONS,'1');assert.equal(process.env.SUPABASE_TEST_ALLOW_REMOTE,'1');assert.equal(process.env.SUPABASE_TEST_PROJECT_REF,REF);assert.equal(new URL(url).hostname,`${REF}.supabase.co`);assert.ok(secret&&publishable&&process.env.SUPABASE_DB_URL);}

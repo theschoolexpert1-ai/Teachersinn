@@ -29,7 +29,7 @@ independently testable and preventing circular imports.
 
 ## Module responsibilities
 
-`src/server.js` still owns server creation, static files, session loading,
+`backend/src/server.js` still owns server creation, static files, session loading,
 security headers, request limits, route matching, access enforcement, CSRF and
 origin checks, validation, serialization, startup, and shutdown. Centralized
 route registration preserves the mature native dispatch contract.
@@ -131,7 +131,7 @@ SQLite constraints map to safe HTTP 409; busy/locked errors map to HTTP 503 with
 `Retry-After: 1`. Unexpected errors remain generic HTTP 500 while the original
 diagnostic is logged. SQL, hashes, cookies, and tokens are never returned.
 
-All modules use the singleton adapter from `src/data/index.js`. The driver, WAL,
+All modules use the singleton adapter from `backend/src/data/index.js`. The driver, WAL,
 foreign keys, busy timeout, and transaction helper are unchanged. The schema
 remains at migration `0003`; migrations `0001` through `0003` are untouched.
 
@@ -157,7 +157,7 @@ concurrent domain operations using disposable databases.
 Domain route modules now register dashboard, community, learning, workshops,
 careers, notifications, lesson plans, tutorials, and educator networking. They register handlers through
 Profile, settings, support, and mentorship registration follow the same model.
-`src/http/auth-adapter.js` centralizes legacy session-cookie establishment and
+`backend/src/http/auth-adapter.js` centralizes legacy session-cookie establishment and
 clearing plus inactive Supabase bridge delegation without owning business logic.
 the existing `route(method, pattern, access, handler)` convention. They do not
 create servers, parse bodies, load sessions, or map errors.
@@ -171,7 +171,7 @@ belongs to dashboard/community HTTP inputs remains in their route modules;
 business and persistence work remains in services and repositories.
 
 Calendar serialization is a pure formatter in
-`src/utils/workshop-calendar.js`; its database lookup stays in the workshop
+`backend/src/utils/workshop-calendar.js`; its database lookup stays in the workshop
 repository and service. Audit and notification coordination continues to use
 the single shared activity repository. Notification writes still participate
 in the transaction owned by the calling service and respect the authoritative

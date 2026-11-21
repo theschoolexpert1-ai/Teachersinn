@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const { performance } = require('node:perf_hooks');
 
 const root = path.join(__dirname, '..');
-const source = fs.readFileSync(path.join(root, 'public', 'app.js'), 'utf8');
+const source = fs.readFileSync(path.join(root, 'frontend', 'app.js'), 'utf8');
 const boot = source.indexOf('  // ====================================================================== boot');
 if (boot < 0) throw new Error('Frontend boot marker not found');
 
@@ -35,7 +35,7 @@ function client(fetchImpl = async () => ({ ok: true, status: 200, json: async ()
     setApi(fn) { api = fn; },
     invokeApi(...args) { return api(...args); }
   }; })();`;
-  vm.runInContext(source.slice(0, boot) + hooks, sandbox, { filename: 'public/app.js' });
+  vm.runInContext(source.slice(0, boot) + hooks, sandbox, { filename: 'frontend/app.js' });
   return { hooks: sandbox.__benchmark, listeners };
 }
 
@@ -89,7 +89,7 @@ async function main() {
   ]);
 
   const assets = ['index.html', 'theme-init.js', 'app.js', 'styles.css'].map(name => ({
-    name, bytes: fs.statSync(path.join(root, 'public', name)).size,
+    name, bytes: fs.statSync(path.join(root, 'frontend', name)).size,
   }));
   console.log(JSON.stringify({
     environment: { node: process.version, host: process.platform, synthetic: true },

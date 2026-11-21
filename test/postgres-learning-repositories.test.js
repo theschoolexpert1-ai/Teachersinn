@@ -2,8 +2,8 @@
 
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const { createPostgresLearningRepository }=require('../src/postgres/repositories/learning.repository');
-const { createPostgresAdminLearningRepository }=require('../src/postgres/repositories/admin-learning.repository');
+const { createPostgresLearningRepository }=require('../backend/src/postgres/repositories/learning.repository');
+const { createPostgresAdminLearningRepository }=require('../backend/src/postgres/repositories/admin-learning.repository');
 
 const identity={authUserId:'123e4567-e89b-42d3-a456-426614174000',verified:true};
 
@@ -76,7 +76,7 @@ test('administrator learning operations verify database role and preserve atomic
 });
 
 test('anonymous transactions assign only anon role and release the pooled client',async()=>{
-  const {createPostgresConnection}=require('../src/postgres/connection');
+  const {createPostgresConnection}=require('../backend/src/postgres/connection');
   const calls=[];const client={async query(input){const sql=typeof input==='string'?input:input.text;calls.push(sql);if(sql==='select public.verify_certificate($1)')return{rows:[],rowCount:0};return{rows:[],rowCount:0};},release(){calls.push('RELEASE');}};
   class Pool{async connect(){return client;}async end(){}}
   const env={SUPABASE_DB_URL:'postgresql://postgres.project:secret@db.example.test:5432/postgres',SUPABASE_DB_CA_CERT:'-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----'};

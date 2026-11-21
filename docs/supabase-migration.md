@@ -2,7 +2,7 @@
 
 ## Current state and Stage A boundary
 
-TeachersInn currently runs as one Node.js process. `src/server.js` owns routing and business rules, `src/db.js` opens the SQLite database synchronously, and `src/security.js` implements scrypt passwords, server-side sessions, CSRF, validation, and rate limiting. The browser calls the same-origin `/api` routes and does not hold authentication tokens.
+TeachersInn currently runs as one Node.js process. `backend/src/server.js` owns routing and business rules, `backend/src/db.js` opens the SQLite database synchronously, and `backend/src/security.js` implements scrypt passwords, server-side sessions, CSRF, validation, and rate limiting. The browser calls the same-origin `/api` routes and does not hold authentication tokens.
 
 Stage A adds a dormant Supabase foundation. `DATA_BACKEND` continues to default to `sqlite`; selecting `supabase` intentionally fails until the data adapter and Auth integration are complete. No migration in this directory is automatically executed by the application.
 

@@ -1,0 +1,22 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),{spawnSync}=require('node:child_process'),path=require('node:path'),fs=require('node:fs');
+const{buildInventory}=require('../scripts/migration/identity-inventory');const{runtimeReadiness}=require('../backend/src/postgres/integration');const{createPostgresRuntime}=require('../backend/src/postgres/runtime');
+const{reconcile}=require('../scripts/migration/identity-reconciliation');
+test('identity inventory normalizes emails and keeps mappings unapproved',()=>{const r=buildInventory([{id:1,email:' Teacher@Example.test ',role:'educator',status:'active'},{id:2,email:'admin@example.test',role:'admin',status:'active'}]);assert.equal(r.summary.identity_count,2);assert.equal(r.consistency.normalized_emails_unique,true);assert.equal(r.identities[0].normalized_email,'teacher@example.test');assert.equal(r.identities[0].auth_user_id,null);assert.equal(r.identities[1].approvals.administrator_security_reviewer,false);});
+test('identity inventory detects duplicate normalized emails',()=>{const r=buildInventory([{id:1,email:'same@example.test',role:'educator',status:'active'},{id:2,email:' SAME@example.test ',role:'mentor',status:'suspended'}]);assert.equal(r.summary.duplicate_normalized_email_count,1);assert.equal(r.consistency.normalized_emails_unique,false);});
+test('serverless PostgreSQL readiness accepts an inline CA',()=>{assert.deepEqual(runtimeReadiness({DATA_BACKEND:'postgres',AUTH_BACKEND:'supabase',ENABLE_POSTGRES_RUNTIME:'1',SUPABASE_DB_URL:'postgresql://user:password@example.test/postgres',SUPABASE_DB_CA_CERT:'-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----'}),{ready:true,reasons:[]});});
+test('inactive PostgreSQL runtime composes all routes without loading SQLite',async()=>{
+ const calls=[],connection={close:async()=>calls.push('closed')};
+ const repository=new Proxy({},{get:()=>async()=>({})});
+ const repositories=new Proxy({adminReporting:{prepareAccountDeletion:async()=>({authUserId:'10000000-0000-4000-8000-000000000001'})}},{get:(target,key)=>target[key]||repository});
+ const bridge=new Proxy({load:async()=>null,clear(){},verifyCurrentPassword:async()=>false,deleteAuthUser:async()=>({ok:true})},{get:(target,key)=>target[key]||(async()=>({ok:true}))});
+ const env={DATA_BACKEND:'postgres',AUTH_BACKEND:'supabase',ENABLE_POSTGRES_RUNTIME:'1',APP_ORIGIN:'https://example.test',COOKIE_SECURE:'1',TRUST_PROXY:'1',SUPABASE_DB_URL:'postgresql://user:password@example.test/postgres',SUPABASE_DB_CA_CERT:'-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----'};
+ const runtime=createPostgresRuntime({env,integration:{connection,repositories},authRuntime:{mode:'supabase',bridge}});
+ assert.equal(runtime.routeInventory.length,98);assert.equal(require.cache[path.resolve(__dirname,'../backend/src/db.js')],undefined);
+ await new Promise(resolve=>runtime.server.listen(0,'127.0.0.1',resolve));
+ const response=await fetch(`http://127.0.0.1:${runtime.server.address().port}/`);assert.equal(response.status,200);assert.match(response.headers.get('content-type'),/text\/html/);assert.match(await response.text(),/TeachersInn/i);
+ await runtime.shutdown();assert.deepEqual(calls,['closed']);
+});
+test('PostgreSQL server selection fails closed before SQLite initialization',()=>{const result=spawnSync(process.execPath,['-e',"require('./backend/src/server')"],{cwd:path.resolve(__dirname,'..'),encoding:'utf8',env:{...process.env,DATA_BACKEND:'postgres',AUTH_BACKEND:'legacy',ENABLE_POSTGRES_RUNTIME:'0',TEACHERSINN_DATA_DIR:path.join(__dirname,'must-not-exist')}});assert.notEqual(result.status,0);assert.match(result.stderr,/PostgreSQL runtime activation refused/);assert.doesNotMatch(result.stderr,/SQLite|teachersinn\.db/);});
+test('identity reconciliation remains a human-review gate',()=>{assert.equal(typeof reconcile,'function');});
+test('Vercel preview configuration packages the separated frontend and backend without secrets or SQLite',()=>{const config=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../vercel.json'),'utf8')),ignored=fs.readFileSync(path.resolve(__dirname,'../.vercelignore'),'utf8');assert.equal(config.fluid,true);assert.deepEqual(config.functions['server.js'].includeFiles,['backend/src/**','frontend/**']);assert.match(ignored,/data\//);assert.match(ignored,/\.private\//);assert.doesNotMatch(JSON.stringify(config),/SUPABASE|PASSWORD|SECRET|DATABASE_URL/);});

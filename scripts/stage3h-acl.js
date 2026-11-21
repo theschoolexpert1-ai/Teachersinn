@@ -1,5 +1,5 @@
 'use strict';
-const {Pool}=require('pg');const{postgresConfig}=require('../src/postgres/config');
+const {Pool}=require('pg');const{postgresConfig}=require('../backend/src/postgres/config');
 (async()=>{const config=postgresConfig(process.env),pool=new Pool({connectionString:config.connectionString,ssl:config.ssl,max:1});try{const result=await pool.query(`select p.proacl::text acl,pg_get_userbyid(p.proowner) owner,
 has_function_privilege('authenticated',p.oid,'execute') authenticated_execute,
 has_function_privilege('anon',p.oid,'execute') anon_execute,

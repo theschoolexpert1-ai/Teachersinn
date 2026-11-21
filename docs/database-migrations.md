@@ -2,7 +2,7 @@
 
 ## Migration model
 
-Migration modules live in `src/migrations/` and use four-digit monotonically
+Migration modules live in `backend/src/migrations/` and use four-digit monotonically
 increasing versions. The current immutable sequence is:
 
 | Version | Name | Purpose |
@@ -68,7 +68,7 @@ development unless the database owner explicitly approves the exact target.
 3. Use deterministic SQL. Do not include seed or environment-specific data.
 4. Prefer additive SQLite changes. Confirm every statement is supported inside
    a transaction on the minimum Node/SQLite runtime.
-5. Add the module to the ordered array in `src/migrations/index.js`.
+5. Add the module to the ordered array in `backend/src/migrations/index.js`.
 6. Extend schema compatibility checks for new critical constraints.
 7. Add tests for fresh application, upgrade from the preceding version,
    rollback, repeated execution, drift, and backup restoration.

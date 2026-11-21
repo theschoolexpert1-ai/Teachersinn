@@ -3,6 +3,17 @@
  * TeachersInn — HTTP server & REST API (zero external dependencies).
  * © Poornaphala Media and Infotech Services LLP. All rights reserved.
  */
+if (String(process.env.DATA_BACKEND || 'sqlite').toLowerCase() === 'postgres') {
+  const runtime = require('./postgres/runtime').createPostgresRuntime({ env: process.env });
+  const server = runtime.server;
+  if (require.main === module) {
+    const port = Number(process.env.PORT || 3000), host = process.env.HOST || '0.0.0.0';
+    server.listen(port, host, () => console.log(`TeachersInn PostgreSQL runtime listening on ${host}:${port}`));
+    const shutdown = () => runtime.shutdown().finally(() => process.exit(0));
+    process.on('SIGTERM', shutdown); process.on('SIGINT', shutdown);
+  }
+  module.exports = server;
+} else {
 const http = require('node:http');
 const path = require('node:path');
 const fs = require('node:fs');
@@ -68,7 +79,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 const TRUST_PROXY = process.env.TRUST_PROXY === '1';
 const COOKIE_SECURE = process.env.COOKIE_SECURE === '1';
 const APP_ORIGIN = process.env.APP_ORIGIN || '';  // e.g. https://teachersinn.in — locks the Origin check
-const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const PUBLIC_DIR = path.join(__dirname, '..', '..', 'frontend');
 const SESSION_IDLE_MS = 12 * 60 * 60 * 1000;      // 12h idle timeout
 const SESSION_ABS_MS = 7 * 24 * 60 * 60 * 1000;   // 7 day absolute lifetime
 const MAX_BODY = 64 * 1024;
@@ -362,3 +373,4 @@ if (require.main === module) {
 }
 module.exports = server;
 server.routeInventory = routes.map(({method,pattern,access})=>({method,pattern,access}));
+}

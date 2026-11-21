@@ -5,7 +5,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const routeInventory=require('./fixtures/route-inventory.json');
-const { runWithPostgresIdentity,currentPostgresIdentity,createPostgresHttpServices,routeCollector,createIsolatedPostgresHttpHarness,createPostgresRouteComposition,resourceId,userId,createPostgresAccountDeletion,createPostgresAdminReportingRepository }=require('../src/postgres');
+const { runWithPostgresIdentity,currentPostgresIdentity,createPostgresHttpServices,routeCollector,createIsolatedPostgresHttpHarness,createPostgresRouteComposition,resourceId,userId,createPostgresAccountDeletion,createPostgresAdminReportingRepository }=require('../backend/src/postgres');
 
 const A='11111111-1111-4111-8111-111111111111';
 const B='22222222-2222-4222-8222-222222222222';

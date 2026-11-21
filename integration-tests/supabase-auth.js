@@ -4,7 +4,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const { createClient } = require('@supabase/supabase-js');
-const { createSupabaseAuthBridge } = require('../src/auth/supabase-bridge');
+const { createSupabaseAuthBridge } = require('../backend/src/auth/supabase-bridge');
 
 const url = String(process.env.SUPABASE_TEST_URL || '').trim();
 const publishableKey = String(process.env.SUPABASE_TEST_PUBLISHABLE_KEY || '').trim();

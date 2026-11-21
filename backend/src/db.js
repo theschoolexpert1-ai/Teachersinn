@@ -1,7 +1,7 @@
 'use strict';
 /**
  * TeachersInn SQLite connection and query layer.
- * Schema changes are owned by src/migrations and validated before this module
+ * Schema changes are owned by backend/src/migrations and validated before this module
  * exposes the connection to the application.
  */
 const path = require('node:path');
@@ -9,7 +9,7 @@ const fs = require('node:fs');
 const { DatabaseSync } = require('node:sqlite');
 const { migrateDatabase } = require('./migrations');
 
-const DATA_DIR = process.env.TEACHERSINN_DATA_DIR || path.join(__dirname, '..', 'data');
+const DATA_DIR = process.env.TEACHERSINN_DATA_DIR || path.join(__dirname, '..', '..', 'data');
 fs.mkdirSync(DATA_DIR, { recursive: true, mode: 0o700 });
 const DB_PATH = path.join(DATA_DIR, 'teachersinn.db');
 

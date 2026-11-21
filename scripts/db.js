@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { DatabaseSync } = require('node:sqlite');
-const { inspectDatabase, migrateDatabase, migrations } = require('../src/migrations');
+const { inspectDatabase, migrateDatabase, migrations } = require('../backend/src/migrations');
 
 function usage() {
   return 'Usage: node scripts/db.js <status|verify|migrate> --db <absolute-or-relative-path> [--confirm-existing]';

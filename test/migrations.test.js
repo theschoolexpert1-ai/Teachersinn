@@ -10,9 +10,9 @@ const { DatabaseSync } = require('node:sqlite');
 const {
   migrations, MigrationError, validateDefinitions, applicationTables,
   inspectDatabase, migrateDatabase,
-} = require('../src/migrations');
+} = require('../backend/src/migrations');
 const { statusCommand, verifyCommand, migrateCommand } = require('../scripts/db');
-const { hashPassword, verifyPassword, randomToken, sha256 } = require('../src/security');
+const { hashPassword, verifyPassword, randomToken, sha256 } = require('../backend/src/security');
 
 function workspace() { return fs.mkdtempSync(path.join(os.tmpdir(), 'teachersinn-migration-test-')); }
 function open(file) { const db = new DatabaseSync(file); db.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000'); return db; }
@@ -20,7 +20,7 @@ function remove(root) { fs.rmSync(root, { recursive: true, force: true }); }
 function applyDirect(db, count) { for (const migration of migrations.slice(0, count)) db.exec(migration.sql); }
 function childInit(dataDir) {
   return new Promise((resolve) => {
-    const code = "const d=require('./src/db'); console.log('ok'); d.db.close()";
+    const code = "const d=require('./backend/src/db'); console.log('ok'); d.db.close()";
     const child = spawn(process.execPath, ['--no-warnings', '-e', code], {
       cwd: path.join(__dirname, '..'), env: { ...process.env, TEACHERSINN_DATA_DIR: dataDir, DATA_BACKEND: 'sqlite', AUTH_BACKEND: 'legacy' },
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -33,7 +33,7 @@ function childInit(dataDir) {
 
 function childSeed(dataDir) {
   return new Promise((resolve) => {
-    const code = "const d=require('./src/db'); require('./src/seed').seedIfEmpty(); d.db.close()";
+    const code = "const d=require('./backend/src/db'); require('./backend/src/seed').seedIfEmpty(); d.db.close()";
     const child = spawn(process.execPath, ['--no-warnings', '-e', code], {
       cwd: path.join(__dirname, '..'), env: { ...process.env, TEACHERSINN_DATA_DIR: dataDir, DATA_BACKEND: 'sqlite', AUTH_BACKEND: 'legacy', ADMIN_EMAIL: 'seed-admin@test.local', ADMIN_PASSWORD: 'SeedPassword2026' },
       stdio: ['ignore', 'pipe', 'pipe'],

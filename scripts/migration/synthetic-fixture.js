@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('node:fs');const path=require('node:path');const{DatabaseSync}=require('node:sqlite');const{migrateDatabase}=require('../../src/migrations');
+const fs=require('node:fs');const path=require('node:path');const{DatabaseSync}=require('node:sqlite');const{migrateDatabase}=require('../../backend/src/migrations');
 const CREATED='2026-10-01 09:00:00';
 const identities=Object.freeze([
   {legacy_user_id:101,auth_user_id:'10000000-0000-4000-8000-000000000101',normalized_email:'stage3i.teacher@example.test',approved_role:'educator',identity_key:'teacher'},

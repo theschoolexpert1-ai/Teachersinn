@@ -1,0 +1,12 @@
+.private/
+data/
+test/
+integration-tests/
+scripts/
+docs/
+supabase/.temp/
+*.db
+*.db-wal
+*.db-shm
+.env
+.env.*

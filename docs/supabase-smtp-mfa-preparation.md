@@ -39,7 +39,7 @@ Supabase's default SMTP is development-only and materially restricted. Custom SM
 
 ## Server-side TOTP MFA design
 
-`src/auth/supabase-mfa.js` is a dormant service boundary using the installed Supabase MFA API. It establishes the server-held Auth session before every operation and provides:
+`backend/src/auth/supabase-mfa.js` is a dormant service boundary using the installed Supabase MFA API. It establishes the server-held Auth session before every operation and provides:
 
 - `status`: safe verified-factor metadata plus current/next Authenticator Assurance Level;
 - `enroll`: TOTP enrollment with a QR data image; the raw TOTP secret and `otpauth` URI are deliberately omitted from returned/loggable objects;
@@ -61,7 +61,7 @@ TOTP is enabled by Supabase, but enforcement is application policy. Database fun
 
 ## Future Settings interface
 
-`src/auth/mfa-ui.js` prepares the future Profile → Settings → Security → Two-Factor Authentication panel using existing settings-card conventions. It includes status, enable, QR scan, one-time-code input, verification, management, disable, reauthentication, and recovery guidance. It is not mounted into the active legacy interface and adds no route.
+`backend/src/auth/mfa-ui.js` prepares the future Profile → Settings → Security → Two-Factor Authentication panel using existing settings-card conventions. It includes status, enable, QR scan, one-time-code input, verification, management, disable, reauthentication, and recovery guidance. It is not mounted into the active legacy interface and adds no route.
 
 The QR code is accepted only as a Supabase SVG data image, treated as sensitive, displayed only during pending enrollment, never logged or persisted, and removed from UI state after success/cancel. TOTP secrets are never stored in SQLite. Disable requires server-side AAL2 and password reauthentication, not only a confirmation dialog.
 

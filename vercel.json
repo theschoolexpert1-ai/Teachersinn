@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "fluid": true,
+  "functions": {
+    "server.js": {
+      "includeFiles": ["backend/src/**", "frontend/**"],
+      "maxDuration": 30
+    }
+  }
+}

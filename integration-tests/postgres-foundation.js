@@ -4,7 +4,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const { createClient } = require('@supabase/supabase-js');
-const { createPostgresConnection } = require('../src/postgres/connection');
+const { createPostgresConnection } = require('../backend/src/postgres/connection');
 
 const url = String(process.env.SUPABASE_TEST_URL || '').trim();
 const secretKey = String(process.env.SUPABASE_TEST_SECRET_KEY || '').trim();

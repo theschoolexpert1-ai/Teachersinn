@@ -2,10 +2,10 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { postgresConfig } = require('../src/postgres/config');
-const { DatabaseError, mapDatabaseError } = require('../src/postgres/errors');
-const { createPostgresConnection } = require('../src/postgres/connection');
-const { defineRepositoryContract, invokeRepository } = require('../src/data/repository-contract');
+const { postgresConfig } = require('../backend/src/postgres/config');
+const { DatabaseError, mapDatabaseError } = require('../backend/src/postgres/errors');
+const { createPostgresConnection } = require('../backend/src/postgres/connection');
+const { defineRepositoryContract, invokeRepository } = require('../backend/src/data/repository-contract');
 
 const env = {
   SUPABASE_DB_URL: 'postgresql://postgres.project:secret@db.example.test:5432/postgres',

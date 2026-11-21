@@ -12,7 +12,7 @@ test('database initialization failure exits without reporting a running server',
   const blockedPath = path.join(root, 'not-a-directory');
   fs.writeFileSync(blockedPath, 'block directory creation');
   try {
-    const result = spawnSync(process.execPath, ['--no-warnings', path.join(__dirname, '..', 'src', 'server.js')], {
+    const result = spawnSync(process.execPath, ['--no-warnings', path.join(__dirname, '..', 'backend', 'src', 'server.js')], {
       encoding: 'utf8', timeout: 10_000,
       env: { ...process.env, TEACHERSINN_DATA_DIR: blockedPath, DATA_BACKEND: 'sqlite', AUTH_BACKEND: 'legacy', PORT: '0' },
     });

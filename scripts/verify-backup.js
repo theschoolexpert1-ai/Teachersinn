@@ -19,13 +19,13 @@ async function main() {
   let source;
   let restored;
   try {
-    const data = require('../src/db');
+    const data = require('../backend/src/db');
     source = data.db;
-    require('../src/seed').seedIfEmpty();
+    require('../backend/src/seed').seedIfEmpty();
     const teacher = data.run(`INSERT INTO users
       (name,email,password_hash,designation,school,subjects,consent_at)
       VALUES (?,?,?,?,?,?,?)`, 'Backup Check Teacher', 'teacher.backup@test.local',
-      require('../src/security').hashPassword('TeacherBackup2026'), 'Teacher',
+      require('../backend/src/security').hashPassword('TeacherBackup2026'), 'Teacher',
       'Recovery Test School', 'Science', new Date().toISOString());
     const teacherId = Number(teacher.lastInsertRowid);
     const courseId = Number(data.get('SELECT id FROM courses ORDER BY id LIMIT 1').id);
@@ -48,9 +48,9 @@ async function main() {
     };
     const integrity = restored.prepare('PRAGMA integrity_check').get().integrity_check;
     const foreignKeyViolations = restored.prepare('PRAGMA foreign_key_check').all().length;
-    const migrationStatus = require('../src/migrations').inspectDatabase(restored);
+    const migrationStatus = require('../backend/src/migrations').inspectDatabase(restored);
     if (integrity !== 'ok' || foreignKeyViolations !== 0 || actual.users !== expected.users || actual.courses !== expected.courses
-      || actual.enrollment !== expected.enrollment || actual.migrations !== require('../src/migrations').migrations.length || migrationStatus.errors.length || migrationStatus.pending.length) {
+      || actual.enrollment !== expected.enrollment || actual.migrations !== require('../backend/src/migrations').migrations.length || migrationStatus.errors.length || migrationStatus.pending.length) {
       throw new Error(`Backup validation failed: ${JSON.stringify({ integrity, foreignKeyViolations, expected, actual })}`);
     }
     console.log(JSON.stringify({ ok: true, method: 'node:sqlite backup API', pages, integrity, foreignKeyViolations,

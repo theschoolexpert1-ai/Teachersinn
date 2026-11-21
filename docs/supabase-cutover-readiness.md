@@ -4,7 +4,7 @@ Stage 3J prepares the cutover but does not execute it. SQLite and legacy authent
 
 ## 1. Architecture and current status
 
-The active application uses synchronous `node:sqlite`, four ordered SQLite migrations, repository/service/route modules, and 98 HTTP contracts. `src/data/index.js` keeps SQLite as the active persistence provider. The PostgreSQL implementation is a parallel repository stack using transaction-local verified UUID identity and verified TLS. Thirteen Supabase SQL migrations define 26 application tables, RLS, policies, functions, triggers, Storage, and HTTP compatibility.
+The active application uses synchronous `node:sqlite`, four ordered SQLite migrations, repository/service/route modules, and 98 HTTP contracts. `backend/src/data/index.js` keeps SQLite as the active persistence provider. The PostgreSQL implementation is a parallel repository stack using transaction-local verified UUID identity and verified TLS. Thirteen Supabase SQL migrations define 26 application tables, RLS, policies, functions, triggers, Storage, and HTTP compatibility.
 
 Legacy authentication stores parameterized scrypt password hashes. Sessions use 256-bit random bearer values with only SHA-256 hashes stored in SQLite, idle and absolute expiry, HttpOnly `SameSite=Strict` cookies, origin validation, and synchronizer CSRF tokens. Roles are `educator`, `mentor`, and `admin`; account status is `active` or `suspended`. Route authorization and PostgreSQL administrator checks are server-side. Client metadata is never authoritative for roles.
 

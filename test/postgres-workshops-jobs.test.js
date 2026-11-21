@@ -1,9 +1,9 @@
 'use strict';
 const test=require('node:test');const assert=require('node:assert/strict');
-const {createPostgresWorkshopsRepository}=require('../src/postgres/repositories/workshops.repository');
-const {createPostgresAdminWorkshopsRepository}=require('../src/postgres/repositories/admin-workshops.repository');
-const {createPostgresJobsRepository}=require('../src/postgres/repositories/jobs.repository');
-const {createPostgresAdminJobsRepository}=require('../src/postgres/repositories/admin-jobs.repository');
+const {createPostgresWorkshopsRepository}=require('../backend/src/postgres/repositories/workshops.repository');
+const {createPostgresAdminWorkshopsRepository}=require('../backend/src/postgres/repositories/admin-workshops.repository');
+const {createPostgresJobsRepository}=require('../backend/src/postgres/repositories/jobs.repository');
+const {createPostgresAdminJobsRepository}=require('../backend/src/postgres/repositories/admin-jobs.repository');
 const I={authUserId:'123e4567-e89b-42d3-a456-426614174000',verified:true};
 function harness(fn){const calls=[];const db={};for(const k of['many','maybeOne','one','execute'])db[k]=async(sql,v)=>{calls.push({k,sql,v});return fn(k,sql,v);};return{calls,withUserTransaction:async(i,w,o)=>{calls.push({k:'tx',i,o});return w(db);}};}
 test('workshop registration and CPD are identity scoped and database authoritative',async()=>{const h=harness((k,s)=>/register_for_workshop/.test(s)?{workshop_id:3,already_registered:false}:/sum\(w.cpd_hours\)/.test(s)?{hours:2,workshops:1}:[]);const r=createPostgresWorkshopsRepository({connection:h});assert.equal((await r.register(I,3)).workshop_id,3);assert.equal((await r.cpdSummary(I,2026)).hours,2);assert.equal(h.calls.some(x=>/user_id=\$1/.test(x.sql||'')&&x.v?.[0]===I.authUserId),true);});

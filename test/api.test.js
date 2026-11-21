@@ -14,9 +14,9 @@ process.env.ADMIN_EMAIL = 'admin@test.local';
 process.env.ADMIN_PASSWORD = 'AdminPassword2026';
 process.env.TRUST_PROXY = '1';
 
-const server = require('../src/server');
-const { db, get, run, tx, DB_PATH } = require('../src/db');
-const { hashPassword, randomToken, sha256 } = require('../src/security');
+const server = require('../backend/src/server');
+const { db, get, run, tx, DB_PATH } = require('../backend/src/db');
+const { hashPassword, randomToken, sha256 } = require('../backend/src/security');
 
 let baseUrl;
 let sequence = 0;

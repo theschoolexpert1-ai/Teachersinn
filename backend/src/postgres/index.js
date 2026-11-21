@@ -10,5 +10,6 @@ const httpServices = require('./http-services');
 const httpHarness = require('./http-harness');
 const accountDeletion = require('./account-deletion');
 const httpRoutes = require('./http-routes');
+const runtime = require('./runtime');
 
-module.exports = { postgresConfig, createPostgresConnection, DatabaseError, mapDatabaseError, ...repositories, ...integration, ...httpContext, ...httpServices, ...httpHarness, ...accountDeletion, ...httpRoutes };
+module.exports = { postgresConfig, createPostgresConnection, DatabaseError, mapDatabaseError, ...repositories, ...integration, ...httpContext, ...httpServices, ...httpHarness, ...accountDeletion, ...httpRoutes, ...runtime };

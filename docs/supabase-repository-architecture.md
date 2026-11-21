@@ -2,7 +2,7 @@
 
 > Stage 3H continuation: verified-identity propagation, route-facing async facades, loopback HTTP security testing, and the exact 98-route composition are implemented locally. The five former gaps are covered by administrator reporting and account-deletion orchestration. Migration `202611190009` is pending and unapplied. Nothing is connected to the active server; cloud HTTP mutations require new Stage 3H authorization.
 
-> Stage 3G readiness: `src/postgres/integration.js` provides an isolated, fail-closed PostgreSQL repository graph gated by Supabase Auth, verified database configuration, and explicit runtime enablement. It is intentionally not connected to the active SQLite server. Architecture, data migration, Auth reconciliation, runtime activation, and rollback plans are documented in the Stage 3G readiness documents.
+> Stage 3G readiness: `backend/src/postgres/integration.js` provides an isolated, fail-closed PostgreSQL repository graph gated by Supabase Auth, verified database configuration, and explicit runtime enablement. It is intentionally not connected to the active SQLite server. Architecture, data migration, Auth reconciliation, runtime activation, and rollback plans are documented in the Stage 3G readiness documents.
 
 > Stage 3F extension: the complete 16-repository/159-method SQLite inventory is mapped in `supabase-repository-coverage-audit.md`. PostgreSQL repositories now cover the remaining mentorship, support, tutorials, lesson plans, and dashboard domains. Migration `202611190008_remaining_repository_security.sql` is applied; the gated cloud suite passes and independent cleanup/RLS verification is clean. See `supabase-remaining-repositories.md`.
 
@@ -26,7 +26,7 @@ The server injects the synchronous SQLite helpers `all`, `get`, `run`, and
 `tx` into 14 repository factories. Services frequently call several repository
 methods inside a synchronous SQLite transaction callback.
 
-`src/data/index.js` remains the runtime persistence gate. It loads SQLite by
+`backend/src/data/index.js` remains the runtime persistence gate. It loads SQLite by
 default and deliberately rejects `DATA_BACKEND=supabase`. No route, service,
 repository, UI, authentication default, or API response was switched in Stage
 3A.
@@ -311,11 +311,11 @@ failures, and the dependency audit reports zero vulnerabilities.
 
 ## 12. Files introduced
 
-- `src/data/repository-contract.js`
-- `src/postgres/config.js`
-- `src/postgres/connection.js`
-- `src/postgres/errors.js`
-- `src/postgres/index.js`
+- `backend/src/data/repository-contract.js`
+- `backend/src/postgres/config.js`
+- `backend/src/postgres/connection.js`
+- `backend/src/postgres/errors.js`
+- `backend/src/postgres/index.js`
 - `test/postgres-foundation.test.js`
 - `integration-tests/postgres-foundation.js`
 

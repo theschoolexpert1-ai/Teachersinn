@@ -93,7 +93,7 @@ function createSupabaseAuthBridge({ env = process.env, resolveLegacyUser, client
     if (mapError) throw new AuthError(503, 'Account mapping is temporarily unavailable.');
     let legacyUser = null;
     if (mapping && mapping.migration_status === 'claimed' && typeof resolveLegacyUser === 'function') {
-      legacyUser = await resolveLegacyUser(mapping.legacy_user_id, data.user.email, mapping.normalized_email, account);
+      legacyUser = await resolveLegacyUser(mapping.legacy_user_id, data.user.email, mapping.normalized_email, account, data.user.id);
     }
     return { authUser: data.user, account, mapping, legacyUser };
   }
